@@ -5,6 +5,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -104,35 +105,35 @@ fun HomeScreen(navController: NavController, mvvm: ViewModelHome) {
 
 
 @Composable
-fun homeScreenBody(
-    modifier: Modifier,
-    navController: NavController,
-    mvvm: ViewModelHome,
-    proyectos: List<Proyecto>
-) {
+fun homeScreenBody(modifier: Modifier, navController: NavController, mvvm: ViewModelHome, proyectos: List<Proyecto>) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
             items(proyectos) { proyecto ->
                 Card(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Text(text = "Id: ${proyecto.id}")
-                        Text(text = "Proyecto: ${proyecto.nombreProyecto}")
-                        Text(text = "Descripción: ${proyecto.descripcion}")
-                        Text(text = "Estado: ${proyecto.estado}")
-                        Text(text = "Contacto: ${proyecto.contacto}")
+                        Text(text = "Nombre del Proyecto: ${proyecto.nombreProyecto}", style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Descripción: ${proyecto.descripcion}", style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Contacto: ${proyecto.contacto}", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
