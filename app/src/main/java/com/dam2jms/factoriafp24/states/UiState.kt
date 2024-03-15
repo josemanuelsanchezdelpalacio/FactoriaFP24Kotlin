@@ -12,6 +12,7 @@ data class UiState(
     val auth: FirebaseAuth = Firebase.auth,
 
     val proyectos: List<Proyecto> = emptyList(),
+    var id: String = "",
     var nombreProyecto: String = "",
     var descripcion: String = "",
     var estado: String = "",

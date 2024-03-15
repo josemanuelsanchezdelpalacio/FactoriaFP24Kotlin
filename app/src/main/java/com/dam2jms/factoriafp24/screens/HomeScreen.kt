@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -52,35 +54,32 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, mvvm: ViewModelHome) {
+    val context = LocalContext.current
     val uiState by mvvm.uiState.collectAsState()
     val proyectos = uiState.proyectos
 
-    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current)
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
 
-    // Cargar los proyectos cuando se inicie la pantalla
-    LaunchedEffect(Unit) {
-        mvvm.leerProyectos()
+    //actualizo los datos cada vez que se vuelva a la pantalla
+    mvvm.leerProyectos(context) { proyectos ->
+        mvvm.actualizarProyectos(proyectos)
     }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Factoría de Proyectos") },
+                title = { Text(text = "Factoria de Proyectos") },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
-                ),
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Atrás")
-                    }
-                }
+                )
             )
         },
         bottomBar = {
-            BottomAppBar {
-                if (isLoggedIn) {
+            if (isLoggedIn) {
+                //muestro la barra de herramientas con botones si el usuario esta registrado
+                BottomAppBar {
                     Button(onClick = { navController.navigate(route = AppScreens.AñadirProyecto.route) }) {
                         Text("Añadir")
                     }
@@ -93,6 +92,9 @@ fun HomeScreen(navController: NavController, mvvm: ViewModelHome) {
                         Text("Modificar")
                     }
                 }
+            } else {
+                //no mostrar la barra de herramientas con botones si el usuario es un invitado
+                Spacer(modifier = Modifier.height(0.dp))
             }
         }
     ) { paddingValues ->
@@ -102,14 +104,19 @@ fun HomeScreen(navController: NavController, mvvm: ViewModelHome) {
 
 
 @Composable
-fun homeScreenBody(modifier: Modifier, navController: NavController, mvvm: ViewModelHome, proyectos: List<Proyecto>) {
+fun homeScreenBody(
+    modifier: Modifier,
+    navController: NavController,
+    mvvm: ViewModelHome,
+    proyectos: List<Proyecto>
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         LazyColumn {
-            items(proyectos.size) { proyecto ->
+            items(proyectos) { proyecto ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -119,10 +126,11 @@ fun homeScreenBody(modifier: Modifier, navController: NavController, mvvm: ViewM
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Text(text = "Proyecto: ${proyectos[proyecto].nombreProyecto}")
-                        Text(text = "Descripción: ${proyectos[proyecto].descripcion}")
-                        Text(text = "Estado: ${proyectos[proyecto].estado}")
-                        Text(text = "Contacto: ${proyectos[proyecto].contacto}")
+                        Text(text = "Id: ${proyecto.id}")
+                        Text(text = "Proyecto: ${proyecto.nombreProyecto}")
+                        Text(text = "Descripción: ${proyecto.descripcion}")
+                        Text(text = "Estado: ${proyecto.estado}")
+                        Text(text = "Contacto: ${proyecto.contacto}")
                     }
                 }
             }

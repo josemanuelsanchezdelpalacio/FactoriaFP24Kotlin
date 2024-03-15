@@ -31,7 +31,13 @@ import com.dam2jms.factoriafp24.states.UiState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EliminarProyecto(navController: NavController, mvvm: ViewModelHome) {
+    var context = LocalContext.current
     val uiState by mvvm.uiState.collectAsState()
+
+    //actualizo los datos cada vez que vuelvo a la pantalla
+    mvvm.leerProyectos(context) { proyectos ->
+        mvvm.actualizarProyectos(proyectos)
+    }
 
     Scaffold(
         topBar = {
@@ -63,7 +69,7 @@ fun eliminarProyectoBody(modifier: Modifier, navController: NavController, mvvm:
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            value = uiState.nombreProyecto,
+            value = uiState.id,
             onValueChange = { mvvm.onChangeEliminar(it) },
             label = { Text("ID del Proyecto") },
             modifier = Modifier
@@ -73,7 +79,7 @@ fun eliminarProyectoBody(modifier: Modifier, navController: NavController, mvvm:
 
         Button(
             onClick = {
-                mvvm.eliminarProyecto(uiState.nombreProyecto, context)
+                mvvm.eliminarProyecto(uiState.id, context) // Pasar el ID del proyecto
             },
             modifier = Modifier.padding(16.dp)
         ) {

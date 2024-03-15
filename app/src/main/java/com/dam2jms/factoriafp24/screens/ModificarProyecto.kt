@@ -54,6 +54,7 @@ fun ModificarProyecto(navController: NavController, mvvm: ViewModelHome) {
 }
 
 
+
 @Composable
 fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm: ViewModelHome, uiState: UiState) {
     val context = LocalContext.current
@@ -64,8 +65,17 @@ fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
+            value = uiState.id,
+            onValueChange = { mvvm.onChangeModificar(it, uiState.nombreProyecto, uiState.descripcion, uiState.estado, uiState.contacto) },
+            label = { Text("ID del Proyecto") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+
+        OutlinedTextField(
             value = uiState.nombreProyecto,
-            onValueChange = { mvvm.onChangeModificar(it, uiState.descripcion, uiState.estado, uiState.contacto) },
+            onValueChange = { mvvm.onChangeModificar(uiState.id, it, uiState.descripcion, uiState.estado, uiState.contacto) },
             label = { Text("Nombre del Proyecto") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -74,7 +84,7 @@ fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm
 
         OutlinedTextField(
             value = uiState.descripcion,
-            onValueChange = { mvvm.onChangeModificar(uiState.nombreProyecto, it, uiState.estado, uiState.contacto) },
+            onValueChange = { mvvm.onChangeModificar(uiState.id, uiState.nombreProyecto, it, uiState.estado, uiState.contacto) },
             label = { Text("Descripción del Proyecto") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,7 +93,7 @@ fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm
 
         OutlinedTextField(
             value = uiState.estado,
-            onValueChange = { mvvm.onChangeModificar(uiState.nombreProyecto, uiState.descripcion, it, uiState.contacto) },
+            onValueChange = { mvvm.onChangeModificar(uiState.id, uiState.nombreProyecto, uiState.descripcion, it, uiState.contacto) },
             label = { Text("Estado del Proyecto") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,7 +102,7 @@ fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm
 
         OutlinedTextField(
             value = uiState.contacto,
-            onValueChange = { mvvm.onChangeModificar(uiState.nombreProyecto, uiState.descripcion, uiState.estado, it) },
+            onValueChange = { mvvm.onChangeModificar(uiState.id, uiState.nombreProyecto, uiState.descripcion, uiState.estado, it) },
             label = { Text("Contacto del Proyecto") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,7 +111,7 @@ fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm
 
         Button(
             onClick = {
-                mvvm.modificarProyecto(Proyecto(uiState.nombreProyecto, uiState.descripcion, uiState.estado, uiState.contacto), context)
+                mvvm.modificarProyecto(uiState.id, Proyecto(uiState.nombreProyecto, uiState.descripcion, uiState.estado, uiState.contacto), context)
             },
             modifier = Modifier.padding(16.dp)
         ) {
@@ -109,4 +119,3 @@ fun modificarProyectoBody(modifier: Modifier, navController: NavController, mvvm
         }
     }
 }
-
