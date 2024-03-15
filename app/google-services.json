@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "431378030120",
+    "project_id": "factoriafp24-5a608",
+    "storage_bucket": "factoriafp24-5a608.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431378030120:android:30e11dbbcafaa7bf0f5f1d",
+        "android_client_info": {
+          "package_name": "com.dam2jms.factoriafp24"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLLuw6lvA9yKwN8Dmjbyro34htijP_1Ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
